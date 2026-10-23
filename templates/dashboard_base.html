@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="workspace container">
+  <aside class="sidebar">
+    <div class="sidebar-user"><span class="mini-avatar large">{{ user.first_name|first|default:'Я' }}</span><strong>{{ user.display_name }}</strong><span class="muted">{{ user.get_role_display }}</span></div>
+    <nav class="side-nav" aria-label="Особистий кабінет">
+      <a {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %} href="{% url 'accounts:dashboard' %}"><span aria-hidden="true">◫</span> Огляд</a>
+      {% if user.role == 'tutor' %}
+        <a {% if request.resolver_match.view_name == 'tutors:edit' %}aria-current="page"{% endif %} href="{% url 'tutors:edit' %}"><span aria-hidden="true">◎</span> Мій профіль</a>
+        <a {% if request.resolver_match.url_name == 'subjects' %}aria-current="page"{% endif %} href="{% url 'tutors:subjects' %}"><span aria-hidden="true">▤</span> Предмети та ціни</a>
+        <a {% if request.resolver_match.url_name == 'schedule' %}aria-current="page"{% endif %} href="{% url 'lessons:schedule' %}"><span aria-hidden="true">▦</span> Мій розклад</a>
+        <a href="{% url 'lessons:list' %}?tab=pending"><span aria-hidden="true">↙</span> Заявки учнів</a>
+      {% else %}
+        <a {% if request.resolver_match.url_name == 'mine' %}aria-current="page"{% endif %} href="{% url 'tutors:mine' %}"><span aria-hidden="true">◎</span> Мої викладачі</a>
+      {% endif %}
+      <a {% if request.resolver_match.view_name == 'lessons:list' and not request.GET.tab %}aria-current="page"{% endif %} href="{% url 'lessons:list' %}"><span aria-hidden="true">▣</span> Мої заняття</a>
+      <a {% if request.resolver_match.url_name == 'homework_list' %}aria-current="page"{% endif %} href="{% url 'lessons:homework_list' %}"><span aria-hidden="true">✎</span> Домашні завдання</a>
+      <a href="{% url 'tutors:catalog' %}"><span aria-hidden="true">⌕</span> Знайти викладача</a>
+      <a {% if request.resolver_match.url_name == 'edit' and request.resolver_match.app_name == 'accounts' %}aria-current="page"{% endif %} href="{% url 'accounts:edit' %}"><span aria-hidden="true">⚙</span> Дані облікового запису</a>
+      {% if user.is_staff %}<a href="{% url 'admin:index' %}"><span aria-hidden="true">◇</span> Адміністрування</a>{% endif %}
+    </nav>
+    <div class="sidebar-note"><span class="eyebrow">ВАШ ТЕМП — ВАШ ШЛЯХ</span><p>Кожен урок — ще один крок до вашої мети.</p></div>
+  </aside>
+  <section class="workspace-content">{% block dashboard_content %}{% endblock %}</section>
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}{{ title }} — TutorWise Lite Pro{% endblock %}
+{% block dashboard_content %}
+<div class="page-heading"><span class="eyebrow">ОСОБИСТИЙ ПРОСТІР</span><h1>{{ title }}</h1><p>{{ subtitle }}</p></div>
+<div class="panel narrow"><form method="post" enctype="multipart/form-data">{% csrf_token %}{% include 'includes/fields.html' %}<div class="actions"><button class="button" type="submit">Зберегти зміни</button>{% if back_url %}<a class="inline-link" href="{% url back_url %}">Назад</a>{% endif %}</div></form></div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Мій кабінет — TutorWise Lite Pro{% endblock %}
+{% block dashboard_content %}
+<div class="page-heading">
+  <span class="eyebrow">ВАШ ПРОСТІР ДЛЯ НАВЧАННЯ</span>
+  <h1>{{ user.first_name|default:'Вітаємо' }}, добрий день.</h1>
+  <p>Ваші заняття, розклад і наступні кроки.</p>
+</div>
+<div class="stats-grid">
+  <a class="stat" href="{% url 'lessons:list' %}?tab=confirmed"><span>Майбутні заняття</span><strong>{{ upcoming_count }}</strong></a>
+  <a class="stat" href="{% url 'lessons:list' %}?tab=pending"><span>Очікують підтвердження</span><strong>{{ pending_count }}</strong></a>
+  <div class="stat"><span>{% if is_tutor %}Підписники{% else %}Мої викладачі{% endif %}</span><strong>{{ extra_count }}</strong></div>
+</div>
+<div class="dashboard-grid">
+  <section>
+    <div class="section-heading"><h2>Найближче заняття</h2><a class="inline-link" href="{% url 'lessons:list' %}">Усі заняття →</a></div>
+    {% if nearest %}
+      <article class="nearest-card">
+        <span class="tag lime">{{ nearest.get_status_display }}</span>
+        <h2>{{ nearest.subject }}</h2>
+        <p>{% if is_tutor %}Учень: {{ nearest.student.user.display_name }}{% else %}{{ nearest.tutor.user.display_name }}{% endif %}</p>
+        <div class="nearest-date"><strong>{{ nearest.slot.start_time|date:'j E' }}</strong><span>{{ nearest.slot.start_time|date:'l, H:i' }} · 60 хвилин</span></div>
+        <div class="actions">
+          {% if nearest.meeting_url %}<a class="button lime-button" href="{{ nearest.meeting_url }}" target="_blank" rel="noopener noreferrer">Відкрити заняття ↗</a>{% endif %}
+          <a class="light-link" href="{% url 'lessons:detail' nearest.pk %}">Докладніше →</a>
+        </div>
+      </article>
+    {% else %}
+      <div class="empty-state"><h3>Поки немає запланованих занять</h3><p>{% if is_tutor %}Додайте предмети й вільний час. Заявки учнів з’являться у вашому кабінеті.{% else %}Оберіть викладача й запишіться на перший урок.{% endif %}</p></div>
+    {% endif %}
+  </section>
+  <section class="panel">
+    <h2>З чого почати</h2>
+    {% if is_tutor %}
+      <p>Заповніть профіль, додайте предмети й відкрийте години для запису.</p>
+      <div class="side-nav">
+        <a href="{% url 'tutors:edit' %}">Мій профіль →</a>
+        <a href="{% url 'tutors:subjects' %}">Предмети та ціни →</a>
+        <a href="{% url 'lessons:schedule' %}">Мій розклад →</a>
+        <a href="{% url 'lessons:list' %}?tab=pending">Заявки учнів →</a>
+      </div>
+    {% else %}
+      <p>Усе для навчання зібрано в трьох розділах.</p>
+      <div class="side-nav">
+        <a href="{% url 'tutors:catalog' %}">Знайти викладача →</a>
+        <a href="{% url 'tutors:mine' %}">Мої викладачі →</a>
+        <a href="{% url 'lessons:homework_list' %}">Домашні завдання →</a>
+      </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,3 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}Мої викладачі — TutorWise Lite Pro{% endblock %}
+{% block dashboard_content %}<div class="page-heading"><span class="eyebrow">ВАША КОМАНДА ПІДТРИМКИ</span><h1>Мої викладачі</h1><p>Ті, з ким хочеться дізнаватися більше.</p></div><div class="tutor-grid two-columns">{% for tutor in tutors %}{% include 'includes/tutor_card.html' with show_next=True %}{% empty %}<div class="empty-state"><h2>Знайдіть свого викладача</h2><p>Підпишіться на цікаві профілі, і вони з’являться тут.</p><a class="button" href="{% url 'tutors:catalog' %}">Перейти до каталогу ↗</a></div>{% endfor %}</div>{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <section class="hero">
+    <div class="hero-copy"><span class="eyebrow"><span class="live-dot"></span> ЗНАННЯ, ЩО ВІДКРИВАЮТЬ МОЖЛИВОСТІ</span><h1>Великі цілі<br>починаються<br>з <em>одного уроку.</em></h1><p>Знайдіть свого викладача, оберіть зручний час і навчайтеся з підтримкою. Усе для вашого наступного кроку — в одному місці.</p><div class="actions"><a class="button" href="{% url 'tutors:catalog' %}">Знайти викладача <span aria-hidden="true">↗</span></a><a class="inline-link" href="{% url 'accounts:register' %}">Я викладач →</a></div><div class="hero-footnote"><span class="circle-check">✓</span> Онлайн-заняття <span class="dot-separator">·</span> Зрозумілі ціни <span class="dot-separator">·</span> Ваш розклад</div></div>
+    <div class="hero-visual">
+      <h2>Навчайтеся у своєму темпі</h2>
+      <p>Три прості кроки до нових знань.</p>
+      <ol class="hero-steps">
+        <li>
+          <span class="hero-step-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v15M3 4c3-1 6-1 9 1 3-2 6-2 9-1v14c-3-1-6-1-9 2-3-3-6-3-9-2Z"/></svg></span>
+          <div><h3>Знайдіть свого викладача</h3><p>Оберіть предмет, підхід і вартість уроку.</p></div>
+        </li>
+        <li>
+          <span class="hero-step-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 11h18m-13 5 3 3 5-5"/></svg></span>
+          <div><h3>Заплануйте заняття</h3><p>Виберіть вільний час і надішліть заявку.</p></div>
+        </li>
+        <li>
+          <span class="hero-step-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 3l5 5M10 14l-1 4 4-1 9-9a2 2 0 0 0-5-5Z"/></svg></span>
+          <div><h3>Закріпіть вивчене</h3><p>Знаходьте домашні завдання у своєму кабінеті.</p></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+  <section class="subject-strip"><span class="muted">Що будемо вивчати?</span>{% for subject in subjects %}<a class="subject-chip" href="{% url 'tutors:catalog' %}?subject={{ subject.pk }}">{{ subject.name }} <span aria-hidden="true">↗</span></a>{% empty %}<span>Предмети з’являться після заповнення каталогу адміністратором.</span>{% endfor %}</section>
+  <section class="section"><div class="section-heading"><div><span class="eyebrow">ВАШІ ПРОВІДНИКИ У СВІТ ЗНАНЬ</span><h2>Знайдіть свого викладача</h2></div><a class="inline-link" href="{% url 'tutors:catalog' %}">Увесь каталог →</a></div><div class="tutor-grid">{% for tutor in featured %}{% include 'includes/tutor_card.html' %}{% empty %}<div class="empty-state"><h3>Тут починається історія TutorWise Lite Pro</h3><p>Зареєструйтеся як викладач і створіть перший профіль.</p><a class="button" href="{% url 'accounts:register' %}">Створити обліковий запис</a></div>{% endfor %}</div></section>
+</div>
+{% endblock %}

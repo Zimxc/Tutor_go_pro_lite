@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Вхід — TutorWise Lite Pro{% endblock %}
+{% block content %}<div class="auth-layout container"><div class="auth-intro"><span class="eyebrow">РАДІ ВАС БАЧИТИ</span><h1>Продовжимо<br><em>ваш шлях?</em></h1><p>Ваші викладачі, заняття й домашні завдання чекають в особистому кабінеті.</p></div><section class="form-card"><h2>Увійти в TutorWise Lite Pro</h2><p class="muted">Уперше тут? <a class="inline-link" href="{% url 'accounts:register' %}">Створити обліковий запис</a></p><form method="post">{% csrf_token %}{% include 'includes/fields.html' %}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}<button class="button full" type="submit">Увійти →</button></form></section></div>{% endblock %}

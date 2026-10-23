@@ -1,0 +1,37 @@
+{% load static %}
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#205c48">
+  <meta name="description" content="TutorWise Lite Pro — репетитори, зручний розклад і заняття онлайн.">
+  <title>{% block title %}TutorWise Lite Pro — навчатися вдається{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/site.css' %}?v=2">
+  <script src="{% static 'js/site.js' %}" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">До вмісту</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="{% url 'home' %}" aria-label="TutorWise Lite Pro — головна"><span class="brand-icon" aria-hidden="true">t<span>g</span></span>Tutor<span class="brand-go">Wise</span><span class="brand-lite">Lite Pro</span></a>
+      <nav class="header-nav" aria-label="Основна навігація">
+        <a href="{% url 'tutors:catalog' %}">Знайти викладача</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'accounts:dashboard' %}">Мій кабінет</a>
+          <a class="account-link" href="{% url 'accounts:edit' %}"><span class="mini-avatar">{{ user.first_name|first|default:'Я' }}</span><span>{{ user.first_name|default:'Обліковий запис' }}</span></a>
+          <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="text-button" type="submit">Вийти</button></form>
+        {% else %}
+          <a href="{% url 'accounts:login' %}">Увійти</a>
+          <a class="button small" href="{% url 'accounts:register' %}">Почати навчання <span aria-hidden="true">↗</span></a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+  <main id="main" class="site-main">
+    {% if messages %}<div class="messages container" aria-live="polite">{% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="{% url 'home' %}">Tutor<span class="brand-go">Wise</span><span class="brand-lite">Lite Pro</span></a><span>Маленькі кроки. Великі відкриття.</span><span>Час — Київ · Валюта — UAH</span></div></footer>
+</body>
+</html>

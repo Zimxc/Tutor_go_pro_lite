@@ -1,0 +1,10 @@
+<article class="tutor-card">
+  <div class="tutor-card-top">{% include 'includes/avatar.html' %}<span class="tag">Онлайн · 60 хв</span></div>
+  <h3><a href="{{ tutor.get_absolute_url }}">{{ tutor.user.display_name }}</a></h3>
+  <p class="tutor-intro">{{ tutor.short_description|default:'Допоможу розібратися в предметі й рухатися до ваших цілей.' }}</p>
+  <div class="offerings">
+    {% for offering in tutor.offerings.all %}<div><span>{{ offering.subject.name }}</span><strong>{{ offering.price|floatformat:'-2' }} <small>UAH</small></strong></div>{% empty %}<p class="muted">Викладач ще додає предмети.</p>{% endfor %}
+  </div>
+  {% if show_next %}<div class="next-lesson">{% with next_lesson=tutor.next_lesson %}{% if next_lesson %}<span class="eyebrow">НАЙБЛИЖЧИЙ УРОК</span><p><a href="{% url 'lessons:detail' next_lesson.pk %}">{{ next_lesson.slot.start_time|date:'j E, H:i' }} · {{ next_lesson.subject }}</a></p>{% if next_lesson.meeting_url %}<a class="inline-link" href="{{ next_lesson.meeting_url }}" target="_blank" rel="noopener noreferrer">Відкрити онлайн-заняття ↗</a>{% endif %}{% else %}<p class="muted">Урок не заплановано</p>{% endif %}{% endwith %}</div>{% endif %}
+  <a class="button secondary full" href="{{ tutor.get_absolute_url }}">Профіль і розклад <span aria-hidden="true">↗</span></a>
+</article>

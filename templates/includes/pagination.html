@@ -1,0 +1,5 @@
+{% if page_obj.has_other_pages %}<nav class="pagination" aria-label="Сторінки">
+  {% if page_obj.has_previous %}<a class="button secondary small" href="?page={{ page_obj.previous_page_number }}&amp;q={{ query|urlencode }}&amp;subject={{ selected_subject|urlencode }}&amp;tab={{ tab|urlencode }}">← Назад</a>{% endif %}
+  <span>Сторінка {{ page_obj.number }} із {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}<a class="button secondary small" href="?page={{ page_obj.next_page_number }}&amp;q={{ query|urlencode }}&amp;subject={{ selected_subject|urlencode }}&amp;tab={{ tab|urlencode }}">Далі →</a>{% endif %}
+</nav>{% endif %}

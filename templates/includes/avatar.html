@@ -1,0 +1,1 @@
+{% if tutor.photo %}<img class="avatar {{ avatar_class }}" src="{{ tutor.photo.url }}" alt="{{ tutor.user.display_name }}" loading="lazy" width="80" height="80">{% else %}<span class="avatar initials {{ avatar_class }}" aria-hidden="true">{{ tutor.user.first_name|first|default:'Т' }}{{ tutor.user.last_name|first }}</span>{% endif %}

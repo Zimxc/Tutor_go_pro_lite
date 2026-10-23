@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}{{ tutor.user.display_name }} — TutorWise Lite Pro{% endblock %}
+{% block content %}
+<div class="container profile-page">
+  <a class="back-link" href="{% url 'tutors:catalog' %}">← Усі викладачі</a>
+  <div class="profile-grid">
+    <aside class="panel tutor-bio">
+      {% include 'includes/avatar.html' with avatar_class='big' %}
+      <h1>{{ tutor.user.display_name }}</h1>
+      <p class="intro">{{ tutor.short_description }}</p>
+      <div class="prose">{{ tutor.description|default:'Викладач ще заповнює свій профіль.'|linebreaks }}</div>
+      <h2>Предмети та ціни</h2>
+      <div class="offerings">
+        {% for offering in tutor.offerings.all %}
+          <div><span>{{ offering.subject }}</span><strong>{{ offering.price|floatformat:'-2' }} UAH</strong></div>
+        {% empty %}<p class="muted">Предмети ще не додано.</p>{% endfor %}
+      </div>
+      <p class="help-text">Онлайн · 60 хвилин · Вартість за урок</p>
+      {% if user.is_authenticated and user.role == 'student' %}
+        <form method="post" action="{% url 'tutors:subscription' tutor.pk %}">
+          {% csrf_token %}
+          {% if subscribed %}
+            <input type="hidden" name="action" value="unsubscribe"><button class="button secondary full" type="submit">Відписатися</button>
+          {% else %}
+            <input type="hidden" name="action" value="subscribe"><button class="button full" type="submit">Підписатися</button>
+          {% endif %}
+        </form>
+      {% elif not user.is_authenticated %}
+        <a class="button full" href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}">Увійти для запису</a>
+      {% elif user.pk == tutor.user_id %}
+        <a class="button secondary full" href="{% url 'tutors:edit' %}">Редагувати профіль</a>
+      {% endif %}
+    </aside>
+    <section class="profile-schedule">
+      <div class="section-heading"><h2>Вільний час</h2><span class="tag">Київ · 60 хв</span></div>
+      <p class="muted">Оберіть предмет і час. Викладач підтвердить заявку у своєму кабінеті.</p>
+      {% regroup slots by start_time|date:'j E Y, l' as day_groups %}
+      {% for day in day_groups %}
+        <div class="schedule-day">
+          <h3>{{ day.grouper }}</h3>
+          {% for slot in day.list %}
+            <div class="slot-booking">
+              <div class="slot-time"><strong>{{ slot.start_time|date:'H:i' }}</strong><span>до {{ slot.end_time|date:'H:i' }}</span></div>
+              {% if user.is_authenticated and user.role == 'student' and tutor.offerings.all %}
+                <form method="post" action="{% url 'lessons:book' tutor.pk %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="slot" value="{{ slot.pk }}">
+                  <label class="sr-only" for="offering-{{ slot.pk }}">Предмет для заняття</label>
+                  <select id="offering-{{ slot.pk }}" name="offering" required>
+                    {% for offering in tutor.offerings.all %}<option value="{{ offering.pk }}">{{ offering.subject }} · {{ offering.price|floatformat:'-2' }} UAH</option>{% endfor %}
+                  </select>
+                  <button class="button small" type="submit">Записатися</button>
+                </form>
+              {% elif not user.is_authenticated %}
+                <a class="inline-link" href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}">Увійти для запису →</a>
+              {% else %}<span class="tag">Вільно</span>{% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      {% empty %}<div class="empty-state"><h3>Поки немає доступного часу</h3><p>Нові години з’являться, коли викладач оновить розклад. Години ваших інших активних занять також приховано.</p></div>{% endfor %}
+      {% if own_lessons %}
+        <div class="section-heading section"><h2>Ваші заняття</h2></div>
+        <p class="muted">Посилання й домашнє завдання — на сторінці відповідного уроку.</p>
+        {% for lesson in own_lessons %}
+          <a class="own-lesson" href="{% url 'lessons:detail' lesson.pk %}">
+            <div><strong>{{ lesson.subject }}</strong><span>{{ lesson.slot.start_time|date:'j E Y, H:i' }}</span></div>
+            <span class="status {{ lesson.status }}">{{ lesson.get_status_display }}</span>
+          </a>
+        {% endfor %}
+      {% endif %}
+    </section>
+  </div>
+</div>
+{% endblock %}
