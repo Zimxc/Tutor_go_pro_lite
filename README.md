@@ -1,6 +1,6 @@
-# TutorWise Lite
+# TutorWise Lite Pro
 
-TutorWise Lite — навчальний сайт для пошуку викладачів і запису на заняття. Проєкт створено для практики Django: роботи з користувачами, формами, базою даних і HTML-шаблонами.
+TutorWise Lite Pro — навчальний сайт для пошуку викладачів і запису на заняття. Проєкт створено для практики Django: роботи з користувачами, формами, базою даних і HTML-шаблонами.
 
 Інтерфейс українською мовою. Час занять вказано за Києвом, ціни — у гривнях.
 
@@ -34,29 +34,29 @@ TutorWise Lite — навчальний сайт для пошуку викла�
 
 ## Встановлення та запуск
 
-Потрібен встановлений Python 3.12 або новіший. Відкрийте PowerShell у папці `tutor-wise-lite`, де знаходиться `manage.py`.
+Потрібен встановлений Python 3.12 або новіший. Відкрийте PowerShell у папці `tutor-wise-lite-pro`, де знаходиться `manage.py`.
 
 Створіть віртуальне середовище поруч із проєктом і встановіть залежності:
 
 ```powershell
-py -3.12 -m venv ..\tutor-wise-lite-venv
-..\tutor-wise-lite-venv\Scripts\Activate.ps1
+py -3.12 -m venv ..\tutor-wise-lite-pro-venv
+..\tutor-wise-lite-pro-venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 ```
 
-Якщо PowerShell не дозволяє активувати середовище, замість `python` у наступних командах використовуйте `..\tutor-wise-lite-venv\Scripts\python.exe`.
+Якщо PowerShell не дозволяє активувати середовище, замість `python` у наступних командах використовуйте `..\tutor-wise-lite-pro-venv\Scripts\python.exe`.
 
 Підготуйте базу даних, додайте початкові предмети та запустіть сайт:
 
 ```powershell
 python manage.py migrate
 python manage.py seed_demo
-python manage.py runserver 127.0.0.1:8001
+python manage.py runserver 127.0.0.1:8002
 ```
 
-Відкрийте [сайт у браузері](http://127.0.0.1:8001/) та зареєструйтеся.
+Відкрийте [сайт у браузері](http://127.0.0.1:8002/) та зареєструйтеся.
 
-Для доступу до [панелі адміністратора](http://127.0.0.1:8001/admin/) створіть обліковий запис:
+Для доступу до [панелі адміністратора](http://127.0.0.1:8002/admin/) створіть обліковий запис:
 
 ```powershell
 python manage.py createsuperuser

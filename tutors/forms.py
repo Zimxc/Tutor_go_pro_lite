@@ -30,7 +30,7 @@ class TutorProfileForm(forms.ModelForm):
             image.save(output, format='JPEG', quality=88)
         except (OSError, ValueError, Image.DecompressionBombError):
             raise forms.ValidationError('Не вдалося прочитати фотографію.')
-        # Перекодирование удаляет метаданные, произвольные имена и вложенное содержимое.
+        # Повторне кодування видаляє метадані, довільні імена та вбудований вміст.
         return ContentFile(output.getvalue(), name=f'{uuid4().hex}.jpg')
 
 

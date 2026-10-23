@@ -1,11 +1,11 @@
-"""Локальные настройки TutorWise Lite Pro. Все пути относятся к этой копии."""
+"""Локальні налаштування TutorWise Lite Pro. Усі шляхи стосуються цієї копії."""
 import os
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Собственный постоянный ключ; ключ оригинального проекта не копируется.
+# Власний постійний ключ; ключ початкового проєкту не копіюється.
 SECRET_KEY = os.environ.get('TUTORWISE_LITE_PRO_SECRET_KEY')
 if not SECRET_KEY:
     secret_file = BASE_DIR / '.django-secret'
@@ -18,7 +18,18 @@ if not SECRET_KEY:
 
 DEBUG = os.environ.get('TUTORWISE_LITE_PRO_DEBUG', '1') == '1'
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+render_host = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 
+if render_host:
+    ALLOWED_HOSTS.append(render_host)
+    CSRF_TRUSTED_ORIGINS = [f'https://{render_host}']
+
+    SECURE_PROXY_SSL_HEADER = (
+        'HTTP_X_FORWARDED_PROTO', 'https'
+    )
+
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 ROOT_URLCONF = 'config.urls'
 TEMPLATES = [{
@@ -54,7 +66,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {'default': {
     'ENGINE': 'django.db.backends.sqlite3',
     'NAME': BASE_DIR / 'db.sqlite3',
-    # IMMEDIATE получает право записи до чтения; SQLite ждёт до 10 секунд.
+    # IMMEDIATE отримує право запису до читання; SQLite очікує до 10 секунд.
     'OPTIONS': {'timeout': 10, 'transaction_mode': 'IMMEDIATE'},
 }}
 AUTH_PASSWORD_VALIDATORS = [
@@ -78,7 +90,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Cookies различаются даже при одновременном запуске на localhost.
+# Файли cookie відрізняються навіть за одночасного запуску на localhost.
 SESSION_COOKIE_NAME = 'tutorwise_lite_pro_sessionid'
 CSRF_COOKIE_NAME = 'tutorwise_lite_pro_csrftoken'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

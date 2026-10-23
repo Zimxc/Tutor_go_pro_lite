@@ -16,7 +16,7 @@ def register(request):
         return redirect('accounts:dashboard')
     form = RegistrationForm(request.POST if request.method == 'POST' else None)
     if request.method == 'POST' and form.is_valid():
-        # Пользователь и профиль появляются вместе или не появляются вовсе.
+        # Користувач і профіль створюються разом або не створюються взагалі.
         with transaction.atomic():
             user = form.save()
             user.create_profile()

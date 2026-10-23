@@ -9,7 +9,7 @@ from django.utils import timezone
 class AvailabilitySlot(models.Model):
     tutor = models.ForeignKey('tutors.TutorProfile', on_delete=models.CASCADE, related_name='slots', verbose_name='Викладач')
     start_time = models.DateTimeField('Початок заняття')
-    # Скрываем удалённый свободный слот, сохраняя историю отменённых занятий.
+    # Приховуємо видалений вільний слот, зберігаючи історію скасованих занять.
     is_listed = models.BooleanField('Показувати в розкладі', default=True)
 
     class Meta:
@@ -38,7 +38,7 @@ class Lesson(models.Model):
     tutor = models.ForeignKey('tutors.TutorProfile', on_delete=models.PROTECT, related_name='lessons', verbose_name='Викладач')
     subject = models.ForeignKey('tutors.Subject', on_delete=models.PROTECT, related_name='lessons', verbose_name='Предмет')
     slot = models.ForeignKey(AvailabilitySlot, on_delete=models.PROTECT, related_name='lessons', verbose_name='Часовий слот')
-    # Копия начала слота нужна SQLite для UNIQUE ученик + час.
+    # Копія початку слота потрібна SQLite для перевірки унікальності пари «учень + година».
     start_time = models.DateTimeField('Початок заняття', editable=False)
     status = models.CharField('Статус', max_length=10, choices=Status.choices, default=Status.PENDING)
     price = models.DecimalField('Вартість під час запису, UAH', max_digits=9, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])

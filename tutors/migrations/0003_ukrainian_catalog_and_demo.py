@@ -1,6 +1,7 @@
 from django.db import migrations
 
 
+# Старі російські значення нижче потрібні лише для пошуку та перекладу давніх демоданих.
 SUBJECT_NAMES = [
     ('Английский язык', 'Англійська мова'),
     ('Физика', 'Фізика'),
@@ -52,13 +53,13 @@ def translate_content(apps, schema_editor, reverse=False):
     def pair(source, target):
         return (target, source) if reverse else (source, target)
 
-    # Сохраняем ID и связи; не объединяем предметы при совпадении названий.
+    # Зберігаємо ID та зв’язки; не об’єднуємо предмети, якщо назви збігаються.
     for source, target in SUBJECT_NAMES:
         source, target = pair(source, target)
         if not Subject.objects.using(alias).filter(name=target).exists():
             Subject.objects.using(alias).filter(name=source).update(name=target)
 
-    # Меняем только известные демозначения, которые пользователь ещё не редактировал.
+    # Змінюємо лише відомі демозначення, які користувач ще не редагував.
     for email, field, source, target in DEMO_NAMES:
         source, target = pair(source, target)
         User.objects.using(alias).filter(email=email, **{field: source}).update(**{field: target})

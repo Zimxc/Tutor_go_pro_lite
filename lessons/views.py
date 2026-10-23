@@ -59,7 +59,7 @@ def delete_slot(request, pk):
 @require_POST
 @handle_database_conflicts('tutors:catalog')
 def book(request, tutor_pk):
-    # IMMEDIATE получает право записи до чтения, UNIQUE остаётся окончательной защитой.
+    # IMMEDIATE отримує право запису до читання, а UNIQUE запобігає дублюванню записів.
     with transaction.atomic():
         tutor = get_object_or_404(TutorProfile, pk=tutor_pk, user__is_active=True, user__role=User.Role.TUTOR)
         form = BookingForm(request.POST, tutor=tutor, student=request.user.student_profile)
@@ -124,7 +124,7 @@ def change_status(request, pk):
         else:
             messages.error(request, 'Цей перехід статусу недоступний. Завершити урок можна після закінчення його години.')
         if new_status:
-            # Условный UPDATE не перезапишет уже изменённый статус.
+            # Умовний UPDATE не перезапише вже змінений статус.
             changed = Lesson.objects.filter(pk=lesson.pk, status=lesson.status).update(status=new_status)
             if changed:
                 messages.success(request, f'Статус заняття: {Lesson.Status(new_status).label.lower()}.')

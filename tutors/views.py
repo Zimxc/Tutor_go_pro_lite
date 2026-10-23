@@ -25,7 +25,7 @@ def catalog(request):
     query = request.GET.get('q', '').strip()[:150]
     subject = request.GET.get('subject', '')
     if query:
-        # Каждый фрагмент имени может совпасть с именем, фамилией или предметом.
+        # Кожен фрагмент запиту може збігатися з ім’ям, прізвищем або предметом.
         for word in query.split():
             tutors = tutors.filter(Q(user__first_name__icontains=word) | Q(user__last_name__icontains=word) | Q(offerings__subject__name__icontains=word))
     if subject.isascii() and subject.isdecimal() and len(subject) <= 18:
@@ -74,7 +74,7 @@ def subscription(request, pk):
 def my_tutors(request):
     student = request.user.student_profile
     tutors = tutor_queryset().filter(subscriptions__student=student)
-    # Для небольшого учебного списка обычный запрос в цикле понятнее Prefetch.
+    # Для невеликого навчального списку звичайний запит у циклі зрозуміліший за Prefetch.
     for tutor in tutors:
         tutor.next_lesson = tutor.lessons.filter(
             student=student,

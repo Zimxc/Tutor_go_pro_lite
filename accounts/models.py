@@ -51,7 +51,7 @@ class User(AbstractUser):
         self.email = self.email.strip().lower()
 
     def create_profile(self):
-        # Вызывается при регистрации/создании администратором в той же транзакции.
+        # Викликається під час реєстрації або створення адміністратором у тій самій транзакції.
         if self.role == self.Role.STUDENT:
             StudentProfile.objects.get_or_create(user=self)
         else:

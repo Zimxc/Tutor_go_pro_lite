@@ -3,7 +3,7 @@ from .models import AvailabilitySlot, Homework, Lesson
 
 
 class ReadOnlyAdmin(admin.ModelAdmin):
-    """Бизнес-переходы выполняются через кабинет; админка помогает изучать данные."""
+    """Статуси змінюються через особистий кабінет; панель адміністратора допомагає переглядати дані."""
     def get_readonly_fields(self, request, obj=None):
         return [field.name for field in self.model._meta.fields]
 

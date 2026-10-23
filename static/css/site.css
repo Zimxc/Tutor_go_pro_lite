@@ -1,4 +1,4 @@
-/* Базовые токены: один файл CSS, без UI-фреймворков и внешних шрифтов. */
+/* Основні стилі: один файл CSS, без фреймворків інтерфейсу та зовнішніх шрифтів. */
 :root {
   --bg:#f8f9f5;
   --paper:#fff;
@@ -379,7 +379,7 @@ small {
 .note strong {
   color:var(--ink)
 }
-/* Публичная главная и каталог. */
+/* Головна сторінка та каталог. */
 .hero {
   display:grid;
   grid-template-columns:1.12fr 1fr;
@@ -667,7 +667,7 @@ small {
   margin-top:35px;
   font-size:12px
 }
-/* Формы. Ошибки Django остаются рядом с полем. */
+/* Форми. Помилки Django залишаються поруч із полем. */
 .auth-layout {
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -795,7 +795,7 @@ textarea {
 .messages+.workspace {
   padding-top:25px
 }
-/* Кабинеты. */
+/* Особисті кабінети. */
 .workspace {
   display:grid;
   grid-template-columns:210px minmax(0,1fr);
@@ -1161,7 +1161,7 @@ textarea {
 .prose:last-child p:last-child {
   margin-bottom:0
 }
-/* Три зоны публичного профиля складываются в одну колонку на мобильном. */
+/* Три частини відкритого профілю розташовуються в один стовпець на мобільних пристроях. */
 .profile-page {
   padding-top:30px;
   max-width:1400px
@@ -1283,7 +1283,7 @@ textarea {
 .error-page p {
   color:var(--muted)
 }
-/* Доступность и адаптация без JavaScript. */
+/* Доступність та адаптивність без JavaScript. */
 :focus-visible {
   outline:3px solid #94b25e;
   outline-offset:4px

@@ -19,7 +19,7 @@ def role_required(role):
 
 
 def handle_database_conflicts(redirect_to):
-    """Исключение ловится после выхода из atomic(), когда транзакция уже откатилась."""
+    """Виняток обробляється після виходу з atomic(), коли транзакцію вже скасовано."""
     def decorator(view):
         @wraps(view)
         def wrapped(request, *args, **kwargs):
